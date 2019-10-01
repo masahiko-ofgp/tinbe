@@ -6,15 +6,17 @@
 #  according to those terms.
 #
 
+import osproc
 import os
-import json
 import parseopt
-#import markdown
+import json
+
+const VERSION = "0.1.0"
 
 
 proc createProject(projectName: string) =
   let
-    parent = parentDir(getCurrentDir())
+    parent = getCurrentDir()
     dir = joinPath(parent, projectName)
     configFile = joinPath(dir, "config.json")
     config = %*
@@ -25,7 +27,7 @@ proc createProject(projectName: string) =
         {"site_description": nil},
         {"copyright": nil},
       ]
-    readmeFile = joinPath(dir, "README.md")
+    docsDir = joinPath(dir, "docs")
 
   if not existsDir(dir):
     createDir(dir)
@@ -34,20 +36,23 @@ proc createProject(projectName: string) =
       var file: File = open(configFile, FileMode.fmWrite)
       defer:
         close(file)
-        echo "created Config.json"
+        echo "\tcreated config.json"
       file.write(config.pretty())
 
-    block createREADME:
-      var file: File = open(readmeFile, FileMode.fmWrite)
-      defer:
-        close(file)
-        echo "created README.md"
-      file.write("# Your project")
-
     block createDocsDir:
-      let docsDir = joinPath(dir, "docs")
       if not existsDir(docsDir):
         createDir(docsDir)
+      echo "\tcreated docs directory"
+
+
+proc startProject() =
+  discard execCmd("./imgs/tinbe.sh")
+  echo "Thanks to use tinbe!! tinbe is static site generator :)"
+  echo "Usage: Please read README"
+  echo "Project name?"
+  var pName: string = readLine(stdin)
+  createProject(pName)
+  echo "Your project has created!!"
 
 
 proc main() =
@@ -56,12 +61,12 @@ proc main() =
     of cmdEnd: doAssert(false)
     of cmdShortOption, cmdLongOption:
       case key:
-      of "c", "create": createProject(val.string)
-      else:
-        echo "ERROR: Not exists " & key & " key."
+      of "v", "version": echo VERSION
+      else: echo "Not exist option"
     of cmdArgument:
-      echo "ERROR: Not exists " & val & " command."
-
+      case key:
+      of "start": startProject()
+      else: echo "Not exist command"
 
 when isMainModule:
   main()
