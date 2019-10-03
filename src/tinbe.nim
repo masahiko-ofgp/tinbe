@@ -7,52 +7,28 @@
 #
 
 import osproc
-import os
 import parseopt
-import json
+import strformat
+import ./private/init
 
 const VERSION = "0.1.0"
 
 
-proc createProject(projectName: string) =
-  let
-    parent = getCurrentDir()
-    dir = joinPath(parent, projectName)
-    configFile = joinPath(dir, "config.json")
-    config = %*
-      [
-        {"site_name": nil},
-        {"site_author": nil},
-        {"site_url": nil},
-        {"site_description": nil},
-        {"copyright": nil},
-      ]
-    docsDir = joinPath(dir, "docs")
-
-  if not existsDir(dir):
-    createDir(dir)
-
-    block createDefaultConfigFile:
-      var file: File = open(configFile, FileMode.fmWrite)
-      defer:
-        close(file)
-        echo "\tcreated config.json"
-      file.write(config.pretty())
-
-    block createDocsDir:
-      if not existsDir(docsDir):
-        createDir(docsDir)
-      echo "\tcreated docs directory"
-
 
 proc startProject() =
   discard execCmd("./imgs/tinbe.sh")
-  echo "Thanks to use tinbe!! tinbe is static site generator :)"
+  echo "Thanks to use tinbe!! This is static site generator :)"
   echo "Usage: Please read README"
   echo "Project name?"
   var pName: string = readLine(stdin)
-  createProject(pName)
-  echo "Your project has created!!"
+  echo "Language?"
+  var lang: string = readLine(stdin)
+  echo "Site name?"
+  var siteName: string = readLine(stdin)
+  echo "Author?"
+  var author: string = readLine(stdin)
+  createProject(pName, lang, siteName, author)
+  echo fmt"Your project '{pName}' has created!!"
 
 
 proc main() =
@@ -66,6 +42,8 @@ proc main() =
     of cmdArgument:
       case key:
       of "start": startProject()
+      of "serve": discard  #TODO: Temporary discard 
+      of "build": discard  #TODO: Temporary discard
       else: echo "Not exist command"
 
 when isMainModule:
