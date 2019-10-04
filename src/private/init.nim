@@ -1,3 +1,10 @@
+# Copyright 2019 Masahiko Hamazawa @masahiko-ofgp
+#
+# Licensed under the MIT license <LICENSE or
+#  https://opensource.org/licenses/MIT>.
+# This file may not be copied, modified, on destributed except
+#  according to those terms.
+#
 import json
 import os
 import strformat
