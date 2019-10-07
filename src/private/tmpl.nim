@@ -7,6 +7,7 @@
 #
 import strformat
 
+
 proc generateHtml*(lang, site_name, author, copyright: string): string =
   result = fmt"""
 <!DOCTYPE HTML>

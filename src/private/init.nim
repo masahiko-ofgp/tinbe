@@ -5,11 +5,13 @@
 # This file may not be copied, modified, on destributed except
 #  according to those terms.
 #
-import json
-import os
-import strformat
-import times
-import ./tmpl
+import
+  json,
+  os,
+  strformat,
+  times,
+  ./tmpl
+
 
 proc createProject*(lang, siteName, author: string) =
   let

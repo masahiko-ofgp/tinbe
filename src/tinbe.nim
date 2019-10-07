@@ -5,11 +5,13 @@
 # This file may not be copied, modified, on destributed except
 #  according to those terms.
 #
-import os
-import osproc
-import parseopt
-import strformat
-import ./private/init
+import
+  os,
+  osproc,
+  parseopt,
+  strformat,
+  ./private/init
+
 
 const VERSION = "0.1.0"
 
