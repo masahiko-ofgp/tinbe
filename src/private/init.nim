@@ -13,7 +13,7 @@ import
   ./tmpl
 
 
-proc createProject*(lang, siteName, author: string) =
+proc createProject*(siteName, author: string) =
   let
     cur = getCurrentDir()
     projectDir = joinPath(cur, "project")
@@ -26,7 +26,6 @@ proc createProject*(lang, siteName, author: string) =
     copyright = fmt"Copyright (c) {pubDate} {author} {siteName}"
     config = %*
       {
-        "lang": lang,
         "site_name": siteName,
         "site_author": author,
         "site_url": nil,
@@ -54,7 +53,7 @@ proc createProject*(lang, siteName, author: string) =
   block createIndexHtml:
     var
       file: File = open(indexFile, FileMode.fmWrite)
-      htmlCode: string = generateHtml(lang, siteName, author, copyright)
+      htmlCode: string = generateHtml(siteName, author, copyright)
     defer:
       close(file)
       echo "\t|-- index.html"
@@ -88,7 +87,7 @@ proc createNewPost*(filename: string) =
   block:
     var
       file: File = open(newFile, FileMode.fmWrite)
-      htmlCode: string = generateHtml(lang, siteName, author, copyright)
+      htmlCode: string = generateHtml(siteName, author, copyright)
     defer:
       close(file)
       echo fmt"{filename}.html has created"

@@ -26,13 +26,11 @@ proc startProject() =
 
   echo "Thanks to use tinbe!! This is static site generator :)"
   echo "Usage: Please read README"
-  echo "Language?"
-  var lang: string = readLine(stdin)
   echo "Site name?"
   var siteName: string = readLine(stdin)
   echo "Author?"
   var author: string = readLine(stdin)
-  createProject(lang, siteName, author)
+  createProject(siteName, author)
   echo fmt"config.json has created!!"
 
 

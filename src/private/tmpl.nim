@@ -8,10 +8,10 @@
 import strformat
 
 
-proc generateHtml*(lang, site_name, author, copyright: string): string =
+proc generateHtml*(site_name, author, copyright: string): string =
   result = fmt"""
 <!DOCTYPE HTML>
-  <html lang='{lang}'>
+  <html>
     <head>
       <meta charset='utf-8'>
       <meta http-equiv='X-UA-Compatible' content='IE=edge'>
