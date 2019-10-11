@@ -47,7 +47,6 @@ proc main() =
       case key:
       of "start": startProject()
       of "clean": discard execCmd("rm -rf project")
-      of "serve": discard  #TODO: Temporary discard 
       else: echo "Not exist command"
 
 when isMainModule:

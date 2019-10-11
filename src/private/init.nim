@@ -77,7 +77,6 @@ proc createNewPost*(filename: string) =
     projectDir = joinPath(cur, "project")
     configFile = joinPath(projectDir, "config.json")
     jf = parseFile(configFile)
-    lang = jf["lang"].getStr()
     siteName = jf["site_name"].getStr()
     author = jf["site_author"].getStr()
     copyright = jf["copyright"].getStr()
