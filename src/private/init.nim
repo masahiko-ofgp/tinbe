@@ -89,7 +89,6 @@ proc createNewPost*(filename: string) =
     siteName = jf["site_name"].getStr()
     author = jf["site_author"].getStr()
     copyright = jf["copyright"].getStr()
-    #docsDir = joinPath(projectDir, "docs")
     docsDir = jf["docs"].getStr()
     newFile = joinPath(docsDir, fmt"{filename}.html")
   
