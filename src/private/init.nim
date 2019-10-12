@@ -13,7 +13,7 @@ import
   ./tmpl
 
 
-proc createProject*(siteName, author: string) =
+proc createProject*(siteName, author, description: string) =
   let
     cur = getCurrentDir()
     projectDir = joinPath(cur, "project")
@@ -22,6 +22,7 @@ proc createProject*(siteName, author: string) =
     indexFile = joinPath(docsDir, "index.html")
     styleDir = joinPath(docsDir, "style")
     styleFile = joinPath(styleDir, "style.css")
+    imgsDir = joinPath(docsDir, "imgs")
     pubDate = getTime().format("YYYY")
     copyright = fmt"Copyright (c) {pubDate} {author} {siteName}"
     config = %*
@@ -29,8 +30,11 @@ proc createProject*(siteName, author: string) =
         "site_name": siteName,
         "site_author": author,
         "site_url": nil,
-        "site_description": nil,
+        "site_description": description,
         "copyright": copyright,
+        "root": projectDir,
+        "docs": docsDir,
+        "style": styleDir
       }
 
   block createProjectDir:
@@ -70,6 +74,11 @@ proc createProject*(siteName, author: string) =
       close(file)
       echo "\t\t|-- style.css"
 
+  block createImageDir:
+    if not existsDir(imgsDir):
+      createDir(imgsDir)
+    echo "\t|-- imgs/"
+
 
 proc createNewPost*(filename: string) =
   var
@@ -80,7 +89,8 @@ proc createNewPost*(filename: string) =
     siteName = jf["site_name"].getStr()
     author = jf["site_author"].getStr()
     copyright = jf["copyright"].getStr()
-    docsDir = joinPath(projectDir, "docs")
+    #docsDir = joinPath(projectDir, "docs")
+    docsDir = jf["docs"].getStr()
     newFile = joinPath(docsDir, fmt"{filename}.html")
   
   block:

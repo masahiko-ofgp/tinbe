@@ -30,7 +30,9 @@ proc startProject() =
   var siteName: string = readLine(stdin)
   echo "Author?"
   var author: string = readLine(stdin)
-  createProject(siteName, author)
+  echo "Site Description?"
+  var description: string = readLine(stdin)
+  createProject(siteName, author, description)
   echo fmt"config.json has created!!"
 
 
