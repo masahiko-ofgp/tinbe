@@ -7,6 +7,7 @@
 #
 include "./template/header.nimf"
 include "./template/footer.nimf"
+include "./template/body.nimf"
 
 import
   json,
@@ -61,11 +62,12 @@ proc createProject*(siteName, author, description: string) =
     var
       file: File = open(indexFile, FileMode.fmWrite)
       header = writeHeader(author, description, siteName)
+      body = writeBody("")
       footer = writeFooter(copyright)
     defer:
       close(file)
       echo "\t|-- index.html"
-    file.write(header&footer)
+    file.write(header&body&footer)
 
   block createStyleDir:
     if not existsDir(styleDir):
@@ -84,12 +86,29 @@ proc createProject*(siteName, author, description: string) =
     echo "\t|-- imgs/"
 
 
-proc createNewPost*(filename: string) =
+# Helper
+proc getConfig(): JsonNode =
   var
     cur = getCurrentDir()
     projectDir = joinPath(cur, "project")
     configFile = joinPath(projectDir, "config.json")
-    jf = parseFile(configFile)
+  result = parseFile(configFile)
+
+
+proc createNewDir*(dirname: string) =
+  var
+    jf = getConfig()
+    docsDir = jf["docs"].getStr()
+    newDir = joinPath(docsDir, dirname)
+
+  if not existsDir(newDir):
+      createDir(newDir)
+  echo fmt"{dirname} has created."
+
+
+proc createNewPost*(filename: string) =
+  var
+    jf = getConfig()
     siteName = jf["site_name"].getStr()
     author = jf["site_author"].getStr()
     description = jf["site_description"].getStr()
@@ -101,8 +120,9 @@ proc createNewPost*(filename: string) =
     var
       file: File = open(newFile, FileMode.fmWrite)
       header = writeHeader(author, description, siteName)
+      body = writeBody("")
       footer = writeFooter(copyright)
     defer:
       close(file)
       echo fmt"{filename}.html has created"
-    file.write(header&footer)
+    file.write(header&body&footer)

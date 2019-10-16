@@ -41,3 +41,21 @@ project
           |-- style.css
 
 ```
+
+If you want to add new directory and new post,
+
+```
+$ ./tinbe -d:blog -a:index
+
+project
+|-- config.json
+|-- docs/
+     |-- index.html
+     |-- blog/
+           |-- index.html
+     |--style/
+        |-- style.css
+
+```
+Currently, if you create a new directory and create a new file,
+you must modify the link to the CSS file yourself. Sorry.

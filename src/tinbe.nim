@@ -44,6 +44,7 @@ proc main() =
       case key:
       of "v", "version": echo VERSION
       of "a", "add": createNewPost(val.string)
+      of "d", "dir": createNewDir(val.string)
       else: echo "Not exist option"
     of cmdArgument:
       case key:
