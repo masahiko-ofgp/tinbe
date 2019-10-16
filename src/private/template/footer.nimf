@@ -1,0 +1,12 @@
+#? stdtmpl | standard
+#
+#proc writeFooter(copyright: string): string =
+#  result = ""
+
+    <!-- Write your content -->
+
+    <footer>
+      $copyright
+    </footer>
+  </body>
+</html>

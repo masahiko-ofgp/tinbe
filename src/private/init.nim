@@ -5,12 +5,14 @@
 # This file may not be copied, modified, on destributed except
 #  according to those terms.
 #
+include "./template/header.nimf"
+include "./template/footer.nimf"
+
 import
   json,
   os,
   strformat,
-  times,
-  ./tmpl
+  times
 
 
 proc createProject*(siteName, author, description: string) =
@@ -33,6 +35,7 @@ proc createProject*(siteName, author, description: string) =
         "site_description": description,
         "copyright": copyright,
         "root": projectDir,
+        "config": configFile,
         "docs": docsDir,
         "style": styleDir
       }
@@ -54,14 +57,15 @@ proc createProject*(siteName, author, description: string) =
       createDir(docsDir)
     echo "|-- docs/"
 
-  block createIndexHtml:
+  block createIndexFile:
     var
       file: File = open(indexFile, FileMode.fmWrite)
-      htmlCode: string = generateHtml(siteName, author, copyright)
+      header = writeHeader(author, description, siteName)
+      footer = writeFooter(copyright)
     defer:
       close(file)
       echo "\t|-- index.html"
-    file.writeLine(htmlCode)
+    file.write(header&footer)
 
   block createStyleDir:
     if not existsDir(styleDir):
@@ -88,6 +92,7 @@ proc createNewPost*(filename: string) =
     jf = parseFile(configFile)
     siteName = jf["site_name"].getStr()
     author = jf["site_author"].getStr()
+    description = jf["site_description"].getStr()
     copyright = jf["copyright"].getStr()
     docsDir = jf["docs"].getStr()
     newFile = joinPath(docsDir, fmt"{filename}.html")
@@ -95,8 +100,9 @@ proc createNewPost*(filename: string) =
   block:
     var
       file: File = open(newFile, FileMode.fmWrite)
-      htmlCode: string = generateHtml(siteName, author, copyright)
+      header = writeHeader(author, description, siteName)
+      footer = writeFooter(copyright)
     defer:
       close(file)
       echo fmt"{filename}.html has created"
-    file.writeLine(htmlCode)
+    file.write(header&footer)
