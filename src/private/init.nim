@@ -19,13 +19,13 @@ import
 proc createProject*(siteName, author, description: string) =
   let
     cur = getCurrentDir()
-    projectDir = joinPath(cur, "project")
-    configFile = joinPath(projectDir, "config.json")
-    docsDir = joinPath(projectDir, "docs")
-    indexFile = joinPath(docsDir, "index.html")
-    styleDir = joinPath(docsDir, "style")
-    styleFile = joinPath(styleDir, "style.css")
-    imgsDir = joinPath(docsDir, "imgs")
+    projectDir = cur / "project"
+    configFile = projectDir / "config.json"
+    docsDir = projectDir / "docs"
+    indexFile = docsDir / "index.html"
+    styleDir = docsDir / "style"
+    styleFile = styleDir / "style.css"
+    imgsDir = docsDir / "imgs"
     pubDate = getTime().format("YYYY")
     copyright = fmt"Copyright (c) {pubDate} {author} {siteName}"
     config = %*
@@ -90,8 +90,8 @@ proc createProject*(siteName, author, description: string) =
 proc getConfig(): JsonNode =
   var
     cur = getCurrentDir()
-    projectDir = joinPath(cur, "project")
-    configFile = joinPath(projectDir, "config.json")
+    projectDir = cur / "project"
+    configFile = projectDir / "config.json"
   result = parseFile(configFile)
 
 
@@ -99,7 +99,7 @@ proc createNewDir*(dirname: string) =
   var
     jf = getConfig()
     docsDir = jf["docs"].getStr()
-    newDir = joinPath(docsDir, dirname)
+    newDir = docsDir / dirname
 
   if not existsDir(newDir):
       createDir(newDir)
@@ -114,7 +114,7 @@ proc createNewPost*(filename: string) =
     description = jf["site_description"].getStr()
     copyright = jf["copyright"].getStr()
     docsDir = jf["docs"].getStr()
-    newFile = joinPath(docsDir, fmt"{filename}.html")
+    newFile = docsDir / fmt"{filename}.html"
   
   block:
     var
