@@ -45,7 +45,7 @@ project
 If you want to add new directory and new post,
 
 ```
-$ ./tinbe -d:blog -a:index
+$ ./tinbe -d:blog -a:blog/index
 
 project
 |-- config.json

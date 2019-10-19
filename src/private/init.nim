@@ -18,8 +18,7 @@ import
 
 proc createProject*(siteName, author, description: string) =
   let
-    cur = getCurrentDir()
-    projectDir = cur / "project"
+    projectDir = $CurDir / "project"
     configFile = projectDir / "config.json"
     docsDir = projectDir / "docs"
     indexFile = docsDir / "index.html"
@@ -89,8 +88,7 @@ proc createProject*(siteName, author, description: string) =
 # Helper
 proc getConfig(): JsonNode =
   var
-    cur = getCurrentDir()
-    projectDir = cur / "project"
+    projectDir = $CurDir / "project"
     configFile = projectDir / "config.json"
   result = parseFile(configFile)
 
