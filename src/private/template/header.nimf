@@ -10,8 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title></title>
-    <meta name="description" content="">
-    <meta name="keyword" content="$description">
+    <meta name="description" content="$description">
+    <meta name="keyword" content="">
     <meta name="author" content="$author">
     <link rel="stylesheet" href="./style/style.css" type="text/css">
   </head>

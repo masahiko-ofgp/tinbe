@@ -5,12 +5,16 @@
 # This file may not be copied, modified, on destributed except
 #  according to those terms.
 #
+{.deadCodeElim: on.}
+include
+  private/init
+
 import
   os,
   osproc,
   parseopt,
-  strformat,
-  ./private/init
+  strformat
+  #./private/init
 
 
 const VERSION = "0.1.0"

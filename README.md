@@ -10,7 +10,7 @@ tinbe is static site generator.
 ```
 $ ./tinbe start
 
-Some quiestions...
+Some questions...
 
 And then your project created.
 
