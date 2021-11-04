@@ -21,12 +21,14 @@ const VERSION = "0.1.0"
 
 
 proc startProject() =
-  var
-    cur = getCurrentDir()
-    imgDir = joinPath(cur, "imgs")
-    imgSh = joinPath(imgDir, "tinbe.sh")
+  let cur = getCurrentDir()
+  let title = fmt"""
+  ============
+  Tinbe {VERSION}
+  ============
+  """
   
-  discard execCmd(fmt"sh {imgSh}")
+  echo title
 
   echo "Thanks to use tinbe!! This is static site generator :)"
   echo "Usage: Please read README"

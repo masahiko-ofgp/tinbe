@@ -41,7 +41,7 @@ proc createProject*(siteName, author, description: string) =
       }
 
   block createProjectDir:
-    if not existsDir(projectDir):
+    if not dirExists(projectDir):
       createDir(projectDir)
     echo "project"
 
@@ -53,7 +53,7 @@ proc createProject*(siteName, author, description: string) =
     file.write(config.pretty())
 
   block createDocsDir:
-    if not existsDir(docsDir):
+    if not dirExists(docsDir):
       createDir(docsDir)
     echo "|-- docs/"
 
@@ -69,7 +69,7 @@ proc createProject*(siteName, author, description: string) =
     file.write(header&body&footer)
 
   block createStyleDir:
-    if not existsDir(styleDir):
+    if not dirExists(styleDir):
       createDir(styleDir)
     echo "\t|-- style/"
 
@@ -80,7 +80,7 @@ proc createProject*(siteName, author, description: string) =
       echo "\t\t|-- style.css"
 
   block createImageDir:
-    if not existsDir(imgsDir):
+    if not dirExists(imgsDir):
       createDir(imgsDir)
     echo "\t|-- imgs/"
 
@@ -99,7 +99,7 @@ proc createNewDir*(dirname: string) =
     docsDir = jf["docs"].getStr()
     newDir = docsDir / dirname
 
-  if not existsDir(newDir):
+  if not dirExists(newDir):
       createDir(newDir)
   echo fmt"{dirname} has created."
 
