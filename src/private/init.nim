@@ -10,11 +10,15 @@ include "./template/footer.nimf"
 include "./template/body.nimf"
 
 import
-  json,
-  os,
-  strformat,
-  times
+  std/json,
+  std/os,
+  std/strformat,
+  std/times,
+  std/logging
 
+
+var
+  logger = newConsoleLogger(fmtStr="[$levelname] $time: ")
 
 proc createProject*(siteName, author, description: string) =
   let
@@ -41,48 +45,62 @@ proc createProject*(siteName, author, description: string) =
       }
 
   block createProjectDir:
-    if not dirExists(projectDir):
+    if dirExists(projectDir):
+      logger.log(lvlInfo, fmt"{projectDir} already exists.")
+    else:
       createDir(projectDir)
-    echo "project"
 
   block createDefaultConfigFile:
-    var file: File = open(configFile, FileMode.fmWrite)
-    defer:
+    var file: File
+
+    if fileExists(configFile):
+      logger.log(lvlInfo, fmt"{configFile} already exists.")
+    else:
+      file = open(configFile, FIleMode.fmWrite)
+      file.write(config.pretty())
       close(file)
-      echo "|-- config.json"
-    file.write(config.pretty())
 
   block createDocsDir:
-    if not dirExists(docsDir):
+    if dirExists(docsDir):
+      logger.log(lvlInfo, fmt"{docsDir} already exists.")
+    else:
       createDir(docsDir)
-    echo "|-- docs/"
 
   block createIndexFile:
     var
-      file: File = open(indexFile, FileMode.fmWrite)
+      file: File
       header = writeHeader(author, description, siteName)
       body = writeBody("")
       footer = writeFooter(copyright)
-    defer:
+
+    if fileExists(indexFile):
+      logger.log(lvlInfo, fmt"{indexFile} already exists.")
+    else:
+      file = open(indexFile, FileMode.fmWrite)
+      file.write(header&body&footer)
       close(file)
-      echo "\t|-- index.html"
-    file.write(header&body&footer)
 
   block createStyleDir:
-    if not dirExists(styleDir):
+    if dirExists(styleDir):
+      logger.log(lvlInfo, fmt"{styleDir} already exists.")
+    else:
       createDir(styleDir)
-    echo "\t|-- style/"
 
   block createDefaultStyleFile:
-    var file: File = open(styleFile, FileMode.fmWrite)
-    defer:
+    var file: File
+
+    if fileExists(styleFile):
+      logger.log(lvlInfo, fmt"{styleFile} already exists.")
+    else:
+      file = open(styleFile, FileMode.fmWrite)
       close(file)
-      echo "\t\t|-- style.css"
+
 
   block createImageDir:
-    if not dirExists(imgsDir):
+    if dirExists(imgsDir):
+      logger.log(lvlInfo, fmt"{imgsDir} already exists.")
+    else:
       createDir(imgsDir)
-    echo "\t|-- imgs/"
 
 
 # Helper
@@ -99,9 +117,10 @@ proc createNewDir*(dirname: string) =
     docsDir = jf["docs"].getStr()
     newDir = docsDir / dirname
 
-  if not dirExists(newDir):
-      createDir(newDir)
-  echo fmt"{dirname} has created."
+  if dirExists(newDir):
+    logger.log(lvlInfo, fmt"{newDir} already exists.")
+  else:
+    createDir(newDir)
 
 
 proc createNewPost*(filename: string) =
@@ -116,11 +135,15 @@ proc createNewPost*(filename: string) =
   
   block:
     var
-      file: File = open(newFile, FileMode.fmWrite)
+      file: File
       header = writeHeader(author, description, siteName)
       body = writeBody("")
       footer = writeFooter(copyright)
-    defer:
+
+    if fileExists(newFile):
+      logger.log(lvlInfo, fmt"{filename} already exists.")
+    else:
+      file = open(newFile, FileMode.fmWrite)
+      file.write(header&body&footer)
+      echo fmt"{filename}.html has created."
       close(file)
-      echo fmt"{filename}.html has created"
-    file.write(header&body&footer)

@@ -10,15 +10,13 @@ include
   private/init
 
 import
-  os,
-  osproc,
-  parseopt,
-  strformat
-  #./private/init
-
+  std/os,
+  std/osproc,
+  std/parseopt,
+  std/strformat,
+  std/logging
 
 const VERSION = "0.1.0"
-
 
 proc startProject() =
   let cur = getCurrentDir()
@@ -39,7 +37,6 @@ proc startProject() =
   echo "Site Description?"
   var description: string = readLine(stdin)
   createProject(siteName, author, description)
-  echo fmt"config.json has created!!"
 
 
 proc main() =
@@ -54,7 +51,11 @@ proc main() =
       else: echo "Not exist option"
     of cmdArgument:
       case key:
-      of "start": startProject()
+      of "start":
+        if dirExists($CurDir / "project"):
+          logger.log(lvlInfo, fmt"Project already exists.")
+        else:
+          startProject()
       of "clean": discard execCmd("rm -rf project")
       else: echo "Not exist command"
 
