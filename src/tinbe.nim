@@ -48,16 +48,18 @@ proc main() =
       of "v", "version": echo VERSION
       of "a", "add": createNewPost(val.string)
       of "d", "dir": createNewDir(val.string)
-      else: echo "Not exist option"
+      else: logger.log(lvlInfo, "Not exist option")
     of cmdArgument:
       case key:
       of "start":
         if dirExists($CurDir / "project"):
-          logger.log(lvlInfo, fmt"Project already exists.")
+          logger.log(lvlWarn, fmt"Project already exists.")
         else:
           startProject()
-      of "clean": discard execCmd("rm -rf project")
-      else: echo "Not exist command"
+      of "clean":
+        discard execCmd("rm -rf project")
+        logger.log(lvlInfo, "Deleted all of your project.")
+      else: logger.log(lvlInfo, "Not exist command")
 
 when isMainModule:
   main()
